@@ -1,0 +1,16 @@
+{
+  "name": "supply-chain-firebreak",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/web"
+  ],
+  "scripts": {
+    "install:web": "npm install --workspace apps/web",
+    "generate:reports": "python tools/generate_sample_reports.py",
+    "lint:web": "npm run lint --workspace apps/web",
+    "build:web": "npm run build --workspace apps/web",
+    "preview:web": "npm run preview --workspace apps/web -- --host 127.0.0.1 --port 5192",
+    "audit": "python tools/generate_sample_reports.py && python -m pytest tests -q && npm run lint:web && npm run build:web"
+  }
+}

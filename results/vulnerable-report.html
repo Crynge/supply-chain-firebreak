@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>vulnerable-repo · Supply Chain Firebreak</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        background: #071118;
+        color: #edf4f1;
+      }
+      main {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 32px;
+      }
+      .hero, .card {
+        background: linear-gradient(180deg, rgba(9,17,27,0.96), rgba(11,19,31,0.88));
+        border: 1px solid rgba(127,155,164,0.18);
+        border-radius: 24px;
+        padding: 24px;
+        box-shadow: 0 18px 60px rgba(0,0,0,0.25);
+      }
+      .hero {
+        display: grid;
+        gap: 12px;
+      }
+      h1, h2 {
+        margin: 0;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+        margin: 20px 0;
+      }
+      .metric {
+        background: rgba(13,24,36,0.8);
+        border-radius: 18px;
+        padding: 16px;
+        border: 1px solid rgba(127,155,164,0.12);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th, td {
+        padding: 12px 10px;
+        text-align: left;
+        border-bottom: 1px solid rgba(127,155,164,0.12);
+        vertical-align: top;
+      }
+      .pill {
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+      .pill-critical { background: rgba(219,92,92,0.18); color: #ffbeb8; }
+      .pill-high { background: rgba(245,183,66,0.18); color: #ffd89c; }
+      .pill-medium { background: rgba(90,176,255,0.18); color: #bce0ff; }
+      .pill-low { background: rgba(46,215,153,0.18); color: #aaf6d7; }
+      ul { padding-left: 18px; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="hero">
+        <p>Supply Chain Firebreak HTML report</p>
+        <h1>vulnerable-repo</h1>
+        <p>Risk score: 100 / 100</p>
+      </section>
+      <section class="grid">
+        <div class="metric"><strong>13</strong><div>Total findings</div></div>
+        <div class="metric"><strong>3</strong><div>Critical</div></div>
+        <div class="metric"><strong>8</strong><div>High</div></div>
+        <div class="metric"><strong>2</strong><div>Medium</div></div>
+      </section>
+      <section class="card">
+        <h2>Urgent fix queue</h2>
+        <ul><li>Untrusted workflow runs on a self-hosted runner</li><li>Publish job exposes long-lived registry or platform secrets</li><li>pull_request_target job checks out attacker-controlled PR head</li><li>Workflow uses pull_request_target</li><li>Action is referenced by tag or branch instead of a full commit SHA</li><li>Run step interpolates attacker-controlled GitHub event data</li></ul>
+      </section>
+      <section class="card" style="margin-top:20px;">
+        <h2>Findings</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Severity</th>
+              <th>Workflow</th>
+              <th>Job</th>
+              <th>Title</th>
+              <th>Evidence</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+                <tr>
+                  <td><span class="pill pill-high">high</span></td>
+                  <td>.github/workflows/comment-triage.yml</td>
+                  <td>triage</td>
+                  <td>Run step interpolates attacker-controlled GitHub event data</td>
+                  <td>Run step contains user input markers: `echo "${{ github.event.comment.body }}"`.</td>
+                </tr>
+                
+                <tr>
+                  <td><span class="pill pill-high">high</span></td>
+                  <td>.github/workflows/release.yml</td>
+                  <td>-</td>
+                  <td>Workflow uses pull_request_target</td>
+                  <td>Trigger list includes pull_request_target.</td>
+                </tr>
+                
+                <tr>
+                  <td><span class="pill pill-high">high</span></td>
+                  <td>.github/workflows/release.yml</td>
+                  <td>publish</td>
+                  <td>Job or workflow grants broad write permissions</td>
+                  <td>Permission `write-all` is set to `write-all`.</td>
+                </tr>
+                
+                <tr>
+                  <td><span class="pill pill-high">high</span></td>
+                  <td>.github/workflows/release.yml</td>
+                  <td>publish</td>
+                  <td>Job or workflow grants broad write permissions</td>
+                  <td>Permission `contents` is set to `write`.</td>
+                </tr>
+                
+                <tr>
+                  <td><span class="pill pill-high">high</span></td>
+                  <td>.github/workflows/release.yml</td>
+                  <td>publish</td>
+                  <td>Job or workflow grants broad write permissions</td>
+                  <td>Permission `packages` is set to `write`.</td>
+                </tr>
+                
+                <tr>
+                  <td><span class="pill pill-critical">critical</span></td>
+                  <td>.github/workflows/release.yml</td>
+                  <td>publish</td>
+                  <td>Untrusted workflow runs on a self-hosted runner</td>
+                  <td>Job `publish` uses self-hosted runners while workflow triggers include pull_request_target, workflow_dispatch.</td>
+                </tr>
+                
+                <tr>
+                  <td><span class="pill pill-high">high</span></td>
+                  <td>.github/workflows/release.yml</td>
+                  <td>publish</td>
+                  <td>Publish job lacks OIDC trusted publishing posture</td>
+                  <td>Publish-style job `publish` does not request `id-token: write`.</td>
+                </tr>
+                
+                <tr>
+                  <td><span class="pill pill-critical">critical</span></td>
+                  <td>.github/workflows/release.yml</td>
+                  <td>publish</td>
+                  <td>Publish job exposes long-lived registry or platform secrets</td>
+                  <td>Publish job env includes: NPM_TOKEN=${{ secrets.NPM_TOKEN }} PYPI_API_TOKEN=${{ secrets.PYPI_API_TOKEN }}</td>
+                </tr>
+                
+                <tr>
+                  <td><span class="pill pill-medium">medium</span></td>
+                  <td>.github/workflows/release.yml</td>
+                  <td>publish</td>
+                  <td>Action is referenced by tag or branch instead of a full commit SHA</td>
+                  <td>Step uses `actions/checkout@v4`.</td>
+                </tr>
+                
+                <tr>
+                  <td><span class="pill pill-critical">critical</span></td>
+                  <td>.github/workflows/release.yml</td>
+                  <td>publish</td>
+                  <td>pull_request_target job checks out attacker-controlled PR head</td>
+                  <td>Checkout step references PR head in `actions/checkout@v4` with args `{'ref': '${{ github.event.pull_request.head.sha }}'}`.</td>
+                </tr>
+                
+                <tr>
+                  <td><span class="pill pill-high">high</span></td>
+                  <td>.github/workflows/release.yml</td>
+                  <td>publish</td>
+                  <td>Action is referenced by tag or branch instead of a full commit SHA</td>
+                  <td>Step uses `aquasecurity/trivy-action@master`.</td>
+                </tr>
+                
+                <tr>
+                  <td><span class="pill pill-high">high</span></td>
+                  <td>.github/workflows/release.yml</td>
+                  <td>publish</td>
+                  <td>Run step interpolates attacker-controlled GitHub event data</td>
+                  <td>Run step contains user input markers: `echo "${{ github.event.pull_request.title }}"`.</td>
+                </tr>
+                
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </body>
+</html>

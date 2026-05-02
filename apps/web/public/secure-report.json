@@ -1,0 +1,38 @@
+{
+  "repo_name": "secure-repo",
+  "root": "C:\\Users\\samee\\Documents\\Codex\\2026-04-23-please-create-a-github-repo-to\\supply-chain-firebreak\\fixtures\\secure-repo",
+  "total_findings": 0,
+  "risk_score": 0,
+  "severity_counts": {
+    "critical": 0,
+    "high": 0,
+    "medium": 0,
+    "low": 0
+  },
+  "urgent_fix_queue": [],
+  "workflow_summaries": [
+    {
+      "path": ".github/workflows/codeql.yml",
+      "triggers": [
+        "pull_request",
+        "push"
+      ],
+      "risk_score": 0,
+      "findings": []
+    },
+    {
+      "path": ".github/workflows/release.yml",
+      "triggers": [
+        "push"
+      ],
+      "risk_score": 0,
+      "findings": []
+    }
+  ],
+  "repo_recommendations": [
+    "Enable GitHub Actions workflow scanning and keep it mandatory on pull requests.",
+    "Move npm and PyPI publishing to OIDC trusted publishing where available.",
+    "Pin third-party actions to full commit SHAs and monitor updates deliberately.",
+    "Keep secrets and self-hosted runners away from untrusted PR execution paths."
+  ]
+}

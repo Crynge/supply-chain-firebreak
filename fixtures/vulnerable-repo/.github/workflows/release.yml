@@ -1,0 +1,31 @@
+name: release
+
+on:
+  pull_request_target:
+    types: [opened, synchronize]
+  workflow_dispatch:
+
+permissions: write-all
+
+jobs:
+  publish:
+    runs-on: [self-hosted, linux]
+    permissions:
+      contents: write
+      packages: write
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+    steps:
+      - name: Checkout attacker PR head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Use floating action
+        uses: aquasecurity/trivy-action@master
+      - name: Print PR title
+        run: echo "${{ github.event.pull_request.title }}"
+      - name: Publish npm package
+        run: npm publish
+      - name: Publish python package
+        run: twine upload dist/*

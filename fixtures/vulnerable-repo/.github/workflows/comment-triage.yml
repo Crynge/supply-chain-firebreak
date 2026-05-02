@@ -1,0 +1,12 @@
+name: comment-triage
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dangerous comment echo
+        run: echo "${{ github.event.comment.body }}"

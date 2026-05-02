@@ -1,0 +1,179 @@
+{
+  "repo_name": "vulnerable-repo",
+  "root": "C:\\Users\\samee\\Documents\\Codex\\2026-04-23-please-create-a-github-repo-to\\supply-chain-firebreak\\fixtures\\vulnerable-repo",
+  "total_findings": 13,
+  "risk_score": 100,
+  "severity_counts": {
+    "critical": 3,
+    "high": 8,
+    "medium": 2,
+    "low": 0
+  },
+  "urgent_fix_queue": [
+    "Untrusted workflow runs on a self-hosted runner",
+    "Publish job exposes long-lived registry or platform secrets",
+    "pull_request_target job checks out attacker-controlled PR head",
+    "Workflow uses pull_request_target",
+    "Action is referenced by tag or branch instead of a full commit SHA",
+    "Run step interpolates attacker-controlled GitHub event data"
+  ],
+  "workflow_summaries": [
+    {
+      "path": ".github/workflows/comment-triage.yml",
+      "triggers": [
+        "issue_comment"
+      ],
+      "risk_score": 18,
+      "findings": [
+        {
+          "rule_id": "script-injection-user-input",
+          "severity": "high",
+          "workflow": ".github/workflows/comment-triage.yml",
+          "job": "triage",
+          "step": "Dangerous comment echo",
+          "title": "Run step interpolates attacker-controlled GitHub event data",
+          "description": "User-submitted fields like PR titles, bodies, and comments can inject shell content into workflows.",
+          "recommendation": "Pass untrusted event data through actions that safely escape it, or treat it as data rather than shell code.",
+          "evidence": "Run step contains user input markers: `echo \"${{ github.event.comment.body }}\"`."
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/release.yml",
+      "triggers": [
+        "pull_request_target",
+        "workflow_dispatch"
+      ],
+      "risk_score": 100,
+      "findings": [
+        {
+          "rule_id": "unsafe-pull-request-target",
+          "severity": "high",
+          "workflow": ".github/workflows/release.yml",
+          "job": null,
+          "step": null,
+          "title": "Workflow uses pull_request_target",
+          "description": "`pull_request_target` runs in the base repository context and has been a recurring root cause in CI/CD compromise chains.",
+          "recommendation": "Avoid `pull_request_target` for code from forks. Prefer `pull_request`, or isolate privileged jobs behind a separate trusted workflow.",
+          "evidence": "Trigger list includes pull_request_target."
+        },
+        {
+          "rule_id": "overbroad-permissions",
+          "severity": "high",
+          "workflow": ".github/workflows/release.yml",
+          "job": "publish",
+          "step": null,
+          "title": "Job or workflow grants broad write permissions",
+          "description": "Over-permissioned GitHub tokens increase blast radius when a workflow is compromised.",
+          "recommendation": "Reduce permissions to the narrowest required set and keep write scopes off untrusted execution paths.",
+          "evidence": "Permission `write-all` is set to `write-all`."
+        },
+        {
+          "rule_id": "overbroad-permissions",
+          "severity": "high",
+          "workflow": ".github/workflows/release.yml",
+          "job": "publish",
+          "step": null,
+          "title": "Job or workflow grants broad write permissions",
+          "description": "Over-permissioned GitHub tokens increase blast radius when a workflow is compromised.",
+          "recommendation": "Reduce permissions to the narrowest required set and keep write scopes off untrusted execution paths.",
+          "evidence": "Permission `contents` is set to `write`."
+        },
+        {
+          "rule_id": "overbroad-permissions",
+          "severity": "high",
+          "workflow": ".github/workflows/release.yml",
+          "job": "publish",
+          "step": null,
+          "title": "Job or workflow grants broad write permissions",
+          "description": "Over-permissioned GitHub tokens increase blast radius when a workflow is compromised.",
+          "recommendation": "Reduce permissions to the narrowest required set and keep write scopes off untrusted execution paths.",
+          "evidence": "Permission `packages` is set to `write`."
+        },
+        {
+          "rule_id": "self-hosted-untrusted-runner",
+          "severity": "critical",
+          "workflow": ".github/workflows/release.yml",
+          "job": "publish",
+          "step": null,
+          "title": "Untrusted workflow runs on a self-hosted runner",
+          "description": "Self-hosted runners in PR-style contexts let attacker-controlled code execute inside your infrastructure.",
+          "recommendation": "Keep self-hosted runners off untrusted events or isolate them behind manual approvals and strong network boundaries.",
+          "evidence": "Job `publish` uses self-hosted runners while workflow triggers include pull_request_target, workflow_dispatch."
+        },
+        {
+          "rule_id": "missing-oidc-publish",
+          "severity": "high",
+          "workflow": ".github/workflows/release.yml",
+          "job": "publish",
+          "step": null,
+          "title": "Publish job lacks OIDC trusted publishing posture",
+          "description": "Recent package compromises frequently depended on long-lived publish tokens stored as secrets.",
+          "recommendation": "Move publish jobs to OIDC trusted publishing for npm or PyPI and remove static registry credentials.",
+          "evidence": "Publish-style job `publish` does not request `id-token: write`."
+        },
+        {
+          "rule_id": "long-lived-publish-token",
+          "severity": "critical",
+          "workflow": ".github/workflows/release.yml",
+          "job": "publish",
+          "step": null,
+          "title": "Publish job exposes long-lived registry or platform secrets",
+          "description": "Static package publish tokens are a primary target in modern supply-chain compromises.",
+          "recommendation": "Replace long-lived secrets with OIDC trusted publishing and rotate any exposed credentials.",
+          "evidence": "Publish job env includes: NPM_TOKEN=${{ secrets.NPM_TOKEN }} PYPI_API_TOKEN=${{ secrets.PYPI_API_TOKEN }}"
+        },
+        {
+          "rule_id": "unpinned-third-party-action",
+          "severity": "medium",
+          "workflow": ".github/workflows/release.yml",
+          "job": "publish",
+          "step": "Checkout attacker PR head",
+          "title": "Action is referenced by tag or branch instead of a full commit SHA",
+          "description": "Floating action references are a common supply-chain pivot because they can change without repository review.",
+          "recommendation": "Pin external actions to full-length commit SHAs and manage updates through Dependabot or controlled review.",
+          "evidence": "Step uses `actions/checkout@v4`."
+        },
+        {
+          "rule_id": "checkout-pr-head-in-target",
+          "severity": "critical",
+          "workflow": ".github/workflows/release.yml",
+          "job": "publish",
+          "step": "Checkout attacker PR head",
+          "title": "pull_request_target job checks out attacker-controlled PR head",
+          "description": "This pattern turns a privileged base-repo workflow into direct execution of untrusted code.",
+          "recommendation": "Do not combine `pull_request_target` with checkout of PR head content. Split trust boundaries into separate workflows.",
+          "evidence": "Checkout step references PR head in `actions/checkout@v4` with args `{'ref': '${{ github.event.pull_request.head.sha }}'}`."
+        },
+        {
+          "rule_id": "unpinned-third-party-action",
+          "severity": "high",
+          "workflow": ".github/workflows/release.yml",
+          "job": "publish",
+          "step": "Use floating action",
+          "title": "Action is referenced by tag or branch instead of a full commit SHA",
+          "description": "Floating action references are a common supply-chain pivot because they can change without repository review.",
+          "recommendation": "Pin external actions to full-length commit SHAs and manage updates through Dependabot or controlled review.",
+          "evidence": "Step uses `aquasecurity/trivy-action@master`."
+        },
+        {
+          "rule_id": "script-injection-user-input",
+          "severity": "high",
+          "workflow": ".github/workflows/release.yml",
+          "job": "publish",
+          "step": "Print PR title",
+          "title": "Run step interpolates attacker-controlled GitHub event data",
+          "description": "User-submitted fields like PR titles, bodies, and comments can inject shell content into workflows.",
+          "recommendation": "Pass untrusted event data through actions that safely escape it, or treat it as data rather than shell code.",
+          "evidence": "Run step contains user input markers: `echo \"${{ github.event.pull_request.title }}\"`."
+        }
+      ]
+    }
+  ],
+  "repo_recommendations": [
+    "Enable GitHub Actions workflow scanning and keep it mandatory on pull requests.",
+    "Move npm and PyPI publishing to OIDC trusted publishing where available.",
+    "Pin third-party actions to full commit SHAs and monitor updates deliberately.",
+    "Keep secrets and self-hosted runners away from untrusted PR execution paths."
+  ]
+}

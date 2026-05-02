@@ -1,0 +1,19 @@
+name: codeql
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
+      - uses: github/codeql-action/init@3d246b6d081f141f9f7f8d7bbf5737ab884f2cba
+      - uses: github/codeql-action/analyze@3d246b6d081f141f9f7f8d7bbf5737ab884f2cba
