@@ -1,3 +1,1 @@
-# Authors
-
-- Sameer Alam — creator, maintainer, and contributor
+Sameer Alam - Creator, maintainer, and GitHub contributor

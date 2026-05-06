@@ -1,5 +1,17 @@
 # Supply Chain Firebreak
 
+<!-- portfolio-seo:start -->
+![Stars](https://img.shields.io/github/stars/Crynge/supply-chain-firebreak?style=flat-square) ![License](https://img.shields.io/github/license/Crynge/supply-chain-firebreak?style=flat-square) ![Status](https://img.shields.io/badge/status-active-blue?style=flat-square)
+
+![Social Preview](docs/social-preview.png)
+
+> Supply-chain security scanner and dashboard for GitHub Actions, package publishing, and credential-exposure risk.
+
+**GitHub Search Keywords:** supply chain security, github actions scanner, devsecops tool, npm security, pypi security, ci cd security
+
+<!-- portfolio-seo:end -->
+
+
 `supply-chain-firebreak` is a late-April 2026 response repo for the issue that currently feels most acute across the coding world: **software supply-chain compromise through CI/CD workflows and package publishing secrets**.
 
 This repo scans GitHub Actions workflows for patterns tied to recent real-world incidents:
@@ -15,10 +27,10 @@ This repo scans GitHub Actions workflows for patterns tied to recent real-world 
 
 ## Why this issue
 
-As of **May 2, 2026**, the strongest current signal is not “general AI” or “generic bug volume.” It is the **continuing wave of CI/CD and package-registry compromise**:
+As of **May 2, 2026**, the strongest current signal is not "general AI" or "generic bug volume." It is the **continuing wave of CI/CD and package-registry compromise**:
 
 - GitHub wrote on **April 1, 2026** that recent open-source attacks are focusing on **secret exfiltration** and often start by compromising **GitHub Actions workflows**.
-- GitHub’s **March 26, 2026** Actions security roadmap says the pattern is now clear: attackers are targeting **CI/CD automation itself**, not just the software it builds.
+- GitHub's **March 26, 2026** Actions security roadmap says the pattern is now clear: attackers are targeting **CI/CD automation itself**, not just the software it builds.
 - npm expanded **trusted publishing** on **April 6, 2026**, reinforcing the push away from long-lived publish tokens.
 - PyPI published its second security audit on **April 16, 2026**, including OIDC and organization-control findings.
 - On **April 23, 2026**, Socket reported the Bitwarden CLI compromise through a poisoned GitHub Action in CI/CD.
