@@ -11,6 +11,15 @@
 
 <!-- portfolio-seo:end -->
 
+<!-- portfolio-links:start -->
+<div align="center">
+
+[Documentation](docs) &middot; [Audit](docs/final-audit.md) &middot; [Research](docs/problem-brief.md) &middot; [Screenshots](docs/screenshots) &middot; [Results](results) &middot; [Contributing](CONTRIBUTING.md) &middot; [Security](SECURITY.md) &middot; [Authors](AUTHORS.md) &middot; [Workflows](.github/workflows)
+
+</div>
+<!-- portfolio-links:end -->
+
+
 
 `supply-chain-firebreak` is a late-April 2026 response repo for the issue that currently feels most acute across the coding world: **software supply-chain compromise through CI/CD workflows and package publishing secrets**.
 
